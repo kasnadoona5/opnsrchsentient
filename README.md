@@ -1,20 +1,14 @@
 OpenDeepSearch FastAPI Server
 This repository provides a step-by-step guide to deploying the OpenDeepSearch library as a robust, persistent API endpoint using FastAPI. This setup is ideal for integrating OpenDeepSearch into other applications like n8n, Zapier, or any custom workflow that needs to call a reliable, long-running search agent.
-The primary challenge this setup solves is the library's reliance on initial environment variable configuration. Our solution uses a "factory function" to dynamically reload the library on each API call, allowing you to pass API keys securely and dynamically with each request.
-Features
-Persistent API Endpoint: Run OpenDeepSearch as a 24/7 service.
-Dynamic API Key Handling: Securely pass API keys with each request, perfect for multi-tenant or dynamic applications.
-Decoupled Architecture: Host your AI agent on a separate server from your main application (e.g., n8n).
-Easy Deployment: A clear, step-by-step guide to get you up and running on a standard Linux VPS.
-Health Check: Includes a root / endpoint to easily check if the service is online.
-🛠Prerequisites
+
+Prerequisites
 Before you begin, you will need:
 A server running a modern Linux distribution (e.g., Ubuntu 22.04).
 SSH access to your server.
-An API key from a search provider (Serper.dev).
-An API key from a language model provider ( OpenRouter.ai).
-⚙️ Step-by-Step Installation Guide
-Step 1: Install a Python Version
+An API key from a search provider (this guide uses Serper.dev).
+An API key from a language model provider (this guide uses OpenRouter.ai).
+Step-by-Step Installation Guide
+Step 1: Install a Modern Python Version
 OpenDeepSearch requires Python 3.9 or newer. We will install Python 3.11 to ensure full compatibility.
 code
 Bash
@@ -57,11 +51,11 @@ pip install "git+https://github.com/sentient-agi/OpenDeepSearch.git" fastapi uvi
 Info: We are installing the CPU-only version of PyTorch to save significant disk space, as this build does not require a GPU.
 Step 4: Create the FastAPI Application (main.py)
 This is the core of our project. This script creates a web server with a /search endpoint that dynamically rigs and runs the OpenDeepSearchTool.
-Create a file named main.py:
-code
-Bash
+Create a file named main.py:```bash
 nano main.py
-```Copy and paste the entire code block below into the file. The code is also available in the `main.py` file in this repository.
+code
+Code
+Copy and paste the entire code block below into the file. The code is also available in the `main.py` file in this repository.
 
 ```python
 import os
@@ -181,7 +175,7 @@ Allow external traffic to reach your API on port 8000.
 code
 Bash
 sudo ufw allow 8000/tcp
-🚀 Using Your API
+Using Your API
 Your OpenDeepSearch API is now live. You can call it from any application (like n8n, Postman, or a custom script) by sending a POST request to:
 http://<YOUR_SERVER_IP>:8000/search
 Required Headers
