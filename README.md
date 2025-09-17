@@ -1,23 +1,30 @@
-OpenDeepSearch FastAPI Server
+# OpenDeepSearch FastAPI Server
+
 This repository provides a step-by-step guide to deploying the OpenDeepSearch library as a robust, persistent API endpoint using FastAPI. This setup is ideal for integrating OpenDeepSearch into other applications like n8n, Zapier, or any custom workflow that needs to call a reliable, long-running search agent.
+
 The primary challenge this setup solves is the library's reliance on initial environment variable configuration. Our solution uses a "factory function" to dynamically reload the library on each API call, allowing you to pass API keys securely and dynamically with each request.
-Features
-Persistent API Endpoint: Run OpenDeepSearch as a 24/7 service.
-Dynamic API Key Handling: Securely pass API keys with each request, perfect for multi-tenant or dynamic applications.
-Decoupled Architecture: Host your AI agent on a separate server from your main application (e.g., n8n).
-Easy Deployment: A clear, step-by-step guide to get you up and running on a standard Linux VPS.
-Health Check: Includes a root / endpoint to easily check if the service is online.
-Prerequisites
+
+## Features
+- **Persistent API Endpoint**: Run OpenDeepSearch as a 24/7 service.
+- **Dynamic API Key Handling**: Securely pass API keys with each request, perfect for multi-tenant or dynamic applications.
+- **Decoupled Architecture**: Host your AI agent on a separate server from your main application (e.g., n8n).
+- **Easy Deployment**: A clear, step-by-step guide to get you up and running on a standard Linux VPS.
+- **Health Check**: Includes a root `/` endpoint to easily check if the service is online.
+
+## Prerequisites
 Before you begin, you will need:
-A server running a modern Linux distribution (e.g., Ubuntu 22.04).
-SSH access to your server.
-An API key from a search provider (this guide uses Serper.dev).
-An API key from a language model provider (this guide uses OpenRouter.ai).
-Step-by-Step Installation Guide
-Step 1: Install a Modern Python Version
+- A server running a modern Linux distribution (e.g., Ubuntu 22.04).
+- SSH access to your server.
+- An API key from a search provider (this guide uses Serper.dev).
+- An API key from a language model provider (this guide uses OpenRouter.ai).
+
+## Step-by-Step Installation Guide
+
+### Step 1: Install a Modern Python Version
+
 OpenDeepSearch requires Python 3.9 or newer. We will install Python 3.11 to ensure full compatibility.
-code
-Bash
+
+```bash
 # Update package lists
 sudo apt update
 sudo apt install software-properties-common -y
@@ -30,8 +37,9 @@ sudo apt update
 sudo apt install python3.11 python3.11-venv -y
 Step 2: Create a Project Directory and Virtual Environment
 It's crucial to isolate our project's dependencies in a virtual environment.
-code
-Bash
+
+bash
+Copy code
 # Create a project directory
 mkdir ~/opendeepsearch-api
 cd ~/opendeepsearch-api
@@ -42,10 +50,12 @@ python3.11 -m venv venv
 # Activate the virtual environment
 source venv/bin/activate
 Note: Your terminal prompt should now start with (venv). You must activate this environment every time you work on the project.
+
 Step 3: Install All Required Libraries
 We will install opendeepsearch directly from its GitHub repository to get the latest version, along with all other necessary libraries.
-code
-Bash
+
+bash
+Copy code
 # First, ensure git is installed
 sudo apt install git -y
 
@@ -55,15 +65,19 @@ pip install --upgrade pip
 # Install all required libraries in a single command
 pip install "git+https://github.com/sentient-agi/OpenDeepSearch.git" fastapi uvicorn "torch --index-url https://download.pytorch.org/whl/cpu" loguru nest_asyncio litellm
 Info: We are installing the CPU-only version of PyTorch to save significant disk space, as this build does not require a GPU.
+
 Step 4: Create the FastAPI Application (main.py)
 This is the core of our project. This script creates a web server with a /search endpoint that dynamically rigs and runs the OpenDeepSearchTool.
+
 Create a file named main.py:
-code
-Bash
+
+bash
+Copy code
 nano main.py
 Copy and paste the entire code block below into the file. The code is also available in the main.py file in this repository.
-code
-Python
+
+python
+Copy code
 import os
 import sys
 import importlib
@@ -158,17 +172,16 @@ async def run_search(req: Request, request_body: SearchRequest):
 # --- Health Check Endpoint ---
 @app.get("/")
 def read_root():
-    return {"status": "OpenDeepSearch API is running"}```
+    return {"status": "OpenDeepSearch API is running"}
+IMPORTANT: Before saving, remember to change YOUR_SUPER_SECRET_RANDOM_STRING_HERE to your own unique, secret password. This will be used to protect your API.
 
-**IMPORTANT**: Before saving, remember to change `YOUR_SUPER_SECRET_RANDOM_STRING_HERE` to your own unique, secret password. This will be used to protect your API.
+Save and exit the editor (Ctrl + X, then Y, then Enter).
 
-Save and exit the editor (`Ctrl + X`, then `Y`, then `Enter`).
+Step 5: Run the Server Persistently
+To ensure your API stays online even after you disconnect your SSH session, we'll use screen.
 
-### Step 5: Run the Server Persistently
-
-To ensure your API stays online even after you disconnect your SSH session, we'll use `screen`.
-
-```bash
+bash
+Copy code
 # Install screen if it's not already
 sudo apt install screen -y
 
@@ -180,21 +193,31 @@ source venv/bin/activate
 uvicorn main:app --host 0.0.0.0 --port 8000
 Your server is now running. To leave it running in the background, detach from the session by pressing Ctrl + A, releasing, and then pressing D.
 To re-attach to the session later (to view logs or restart), use screen -r api.
+
 Step 6: Open the Firewall
 Allow external traffic to reach your API on port 8000.
-code
-Bash
+
+bash
+Copy code
 sudo ufw allow 8000/tcp
 Using Your API
 Your OpenDeepSearch API is now live. You can call it from any application (like n8n, Postman, or a custom script) by sending a POST request to:
+
+arduino
+Copy code
 http://<YOUR_SERVER_IP>:8000/search
 Required Headers
 x-api-key: The secret password you set in main.py.
+
 serper-api-key: Your API key from Serper.dev.
+
 openrouter-api-key: Your API key from OpenRouter.ai.
+
 Required JSON Body
-code
-JSON
+json
+Copy code
 {
   "query": "What are the latest advancements in AI agents?"
 }
+nginx
+Copy code
