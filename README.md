@@ -1,6 +1,5 @@
 OpenDeepSearch FastAPI Server
-This repository provides a step-by-step guide to deploying the OpenDeepSearch library as a robust, persistent API endpoint using FastAPI. This setup is ideal for integrating OpenDeepSearch into other applications like n8n, Zapier, or any custom workflow that needs to call a reliable, long-running search agent.
-The primary challenge this setup solves is the library's reliance on initial environment variable configuration. Our solution uses a "factory function" to dynamically reload the library on each API call, allowing you to pass API keys securely and dynamically with each request.
+This repository provides a step-by-step guide to deploying the OpenDeepSearch library as a robust, persistent API endpoint using FastAPI. This setup is ideal for integrating OpenDeepSearch into other applications like n8n, Zapier, or any custom workflow that needs to call a reliable, long-running search agent. The primary challenge this setup solves is the library's reliance on initial environment variable configuration. Our solution uses a "factory function" to dynamically reload the library on each API call, allowing you to pass API keys securely and dynamically with each request.
 Features
 Persistent API Endpoint: Run OpenDeepSearch as a 24/7 service.
 Dynamic API Key Handling: Securely pass API keys with each request, perfect for multi-tenant or dynamic applications.
@@ -30,13 +29,14 @@ sudo apt update
 sudo apt install python3.11 python3.11-venv -y
 Step 2: Create a Project Directory and Virtual Environment
 It's crucial to isolate our project's dependencies in a virtual environment.
-Create a project directory```bash
+Create a project directory
+code
+Bash
 mkdir ~/opendeepsearch-api
 cd ~/opendeepsearch-api
+Create a virtual environment using python3.11
 code
-Code
-#### Create a virtual environment using python3.11
-```bash
+Bash
 python3.11 -m venv venv
 Activate the virtual environment
 code
@@ -181,23 +181,17 @@ Step 6: Open the Firewall
 Allow external traffic to reach your API on port 8000.
 code
 Bash
-sudo ufw allow 8000/tcp```
-
-## Using Your API
-
-Your OpenDeepSearch API is now live. You can call it from any application (like n8n, Postman, or a custom script) by sending a `POST` request to:
-
-`http://<YOUR_SERVER_IP>:8000/search`
-
-### Required Headers
-
--   `x-api-key`: The secret password you set in `main.py`.
--   `serper-api-key`: Your API key from Serper.dev.
--   `openrouter-api-key`: Your API key from OpenRouter.ai.
-
-### Required JSON Body
-
-```json
+sudo ufw allow 8000/tcp
+Using Your API
+Your OpenDeepSearch API is now live. You can call it from any application (like n8n, Postman, or a custom script) by sending a POST request to:
+http://<YOUR_SERVER_IP>:8000/search
+Required Headers
+x-api-key: The secret password you set in main.py.
+serper-api-key: Your API key from Serper.dev.
+openrouter-api-key: Your API key from OpenRouter.ai.
+Required JSON Body
+code
+JSON
 {
   "query": "What are the latest advancements in AI agents?"
 }
