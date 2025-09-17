@@ -30,16 +30,17 @@ sudo apt update
 sudo apt install python3.11 python3.11-venv -y
 Step 2: Create a Project Directory and Virtual Environment
 It's crucial to isolate our project's dependencies in a virtual environment.
-code
-Bash
-# Create a project directory
+Create a project directory```bash
 mkdir ~/opendeepsearch-api
 cd ~/opendeepsearch-api
-
-# Create a virtual environment using python3.11
+code
+Code
+#### Create a virtual environment using python3.11
+```bash
 python3.11 -m venv venv
-
-# Activate the virtual environment
+Activate the virtual environment
+code
+Bash
 source venv/bin/activate
 Note: Your terminal prompt should now start with (venv). You must activate this environment every time you work on the project.
 Step 3: Install All Required Libraries
@@ -180,17 +181,23 @@ Step 6: Open the Firewall
 Allow external traffic to reach your API on port 8000.
 code
 Bash
-sudo ufw allow 8000/tcp
-Using Your API
-Your OpenDeepSearch API is now live. You can call it from any application (like n8n, Postman, or a custom script) by sending a POST request to:
-http://<YOUR_SERVER_IP>:8000/search
-Required Headers
-x-api-key: The secret password you set in main.py.
-serper-api-key: Your API key from Serper.dev.
-openrouter-api-key: Your API key from OpenRouter.ai.
-Required JSON Body
-code
-JSON
+sudo ufw allow 8000/tcp```
+
+## Using Your API
+
+Your OpenDeepSearch API is now live. You can call it from any application (like n8n, Postman, or a custom script) by sending a `POST` request to:
+
+`http://<YOUR_SERVER_IP>:8000/search`
+
+### Required Headers
+
+-   `x-api-key`: The secret password you set in `main.py`.
+-   `serper-api-key`: Your API key from Serper.dev.
+-   `openrouter-api-key`: Your API key from OpenRouter.ai.
+
+### Required JSON Body
+
+```json
 {
   "query": "What are the latest advancements in AI agents?"
 }
