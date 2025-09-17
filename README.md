@@ -1,5 +1,6 @@
 OpenDeepSearch FastAPI Server
-This repository provides a step-by-step guide to deploying the OpenDeepSearch library as a robust, persistent API endpoint using FastAPI. This setup is ideal for integrating OpenDeepSearch into other applications like n8n, Zapier, or any custom workflow that needs to call a reliable, long-running search agent. The primary challenge this setup solves is the library's reliance on initial environment variable configuration. Our solution uses a "factory function" to dynamically reload the library on each API call, allowing you to pass API keys securely and dynamically with each request.
+This repository provides a step-by-step guide to deploying the OpenDeepSearch library as a robust, persistent API endpoint using FastAPI. This setup is ideal for integrating OpenDeepSearch into other applications like n8n, Zapier, or any custom workflow that needs to call a reliable, long-running search agent.
+The primary challenge this setup solves is the library's reliance on initial environment variable configuration. Our solution uses a "factory function" to dynamically reload the library on each API call, allowing you to pass API keys securely and dynamically with each request.
 Features
 Persistent API Endpoint: Run OpenDeepSearch as a 24/7 service.
 Dynamic API Key Handling: Securely pass API keys with each request, perfect for multi-tenant or dynamic applications.
@@ -29,18 +30,16 @@ sudo apt update
 sudo apt install python3.11 python3.11-venv -y
 Step 2: Create a Project Directory and Virtual Environment
 It's crucial to isolate our project's dependencies in a virtual environment.
-Create a project directory
 code
 Bash
+# Create a project directory
 mkdir ~/opendeepsearch-api
 cd ~/opendeepsearch-api
-Create a virtual environment using python3.11
-code
-Bash
+
+# Create a virtual environment using python3.11
 python3.11 -m venv venv
-Activate the virtual environment
-code
-Bash
+
+# Activate the virtual environment
 source venv/bin/activate
 Note: Your terminal prompt should now start with (venv). You must activate this environment every time you work on the project.
 Step 3: Install All Required Libraries
@@ -159,13 +158,17 @@ async def run_search(req: Request, request_body: SearchRequest):
 # --- Health Check Endpoint ---
 @app.get("/")
 def read_root():
-    return {"status": "OpenDeepSearch API is running"}
-IMPORTANT: Before saving, remember to change YOUR_SUPER_SECRET_RANDOM_STRING_HERE to your own unique, secret password. This will be used to protect your API.
-Save and exit the editor (Ctrl + X, then Y, then Enter).
-Step 5: Run the Server Persistently
-To ensure your API stays online even after you disconnect your SSH session, we'll use screen.
-code
-Bash
+    return {"status": "OpenDeepSearch API is running"}```
+
+**IMPORTANT**: Before saving, remember to change `YOUR_SUPER_SECRET_RANDOM_STRING_HERE` to your own unique, secret password. This will be used to protect your API.
+
+Save and exit the editor (`Ctrl + X`, then `Y`, then `Enter`).
+
+### Step 5: Run the Server Persistently
+
+To ensure your API stays online even after you disconnect your SSH session, we'll use `screen`.
+
+```bash
 # Install screen if it's not already
 sudo apt install screen -y
 
